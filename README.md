@@ -16,11 +16,12 @@ This project follows Clean Architecture principles with the following layers:
 - ✅ **Clean Architecture** - Proper separation of concerns
 - ✅ **CQRS Pattern** - Separate command and query handlers
 - ✅ **Repository Pattern** - Abstracted data access layer
-- ✅ **TypeORM Integration** - Database ORM with PostgreSQL
+- ✅ **TypeORM Integration** - Database ORM with MySQL
 - ✅ **JWT Authentication** - Secure user authentication
 - ✅ **RESTful API** - Well-structured endpoints
 - ✅ **TypeScript** - Full type safety
 - ✅ **NestJS Framework** - Enterprise-grade Node.js framework
+- ✅ **Docker Support** - Containerized deployment ready
 
 ## 📋 Prerequisites
 
@@ -30,17 +31,49 @@ Before running this project, make sure you have the following installed:
 - **npm** 
 - **MySQL**
 - **Git**
+- **Docker** (optional, for containerized deployment)
 
 ## 🚀 Installation
 
-### 1. Clone the Repository
+### Option 1: Docker (Recommended)
+
+#### 1. Clone the Repository
 
 ```bash
 git clone <your-repository-url>
 cd blog-api
 ```
 
-### 2. Install Dependencies
+#### 2. Start with Docker
+
+**Development Environment:**
+```bash
+docker-compose -f docker-compose.dev.yml up --build
+```
+
+**Production Environment:**
+```bash
+docker-compose up --build
+```
+
+#### 3. Access Your Application
+
+- **API:** http://localhost:3000
+- **Health Check:** http://localhost:3000/health
+- **MySQL:** localhost:3306
+
+> 📖 **For detailed Docker instructions, see [DOCKER.md](DOCKER.md)**
+
+### Option 2: Local Installation
+
+#### 1. Clone the Repository
+
+```bash
+git clone <your-repository-url>
+cd blog-api
+```
+
+#### 2. Install Dependencies
 
 ```bash
 npm install

@@ -1,0 +1,59 @@
+
+services:
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
+    container_name: blog-api-mysql-dev
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: blog_api_dev
+      MYSQL_USER: blog_user
+      MYSQL_PASSWORD: blog_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_dev_data:/var/lib/mysql
+    networks:
+      - blog-dev-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Blog API Application (Development)
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: blog-api-dev
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_USERNAME=blog_user
+      - DB_PASSWORD=blog_password
+      - DB_DATABASE=blog_api_dev
+      - JWT_SECRET=dev_jwt_secret_key
+      - JWT_EXPIRES_IN=24h
+      - PORT=3000
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - blog-dev-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run start:dev
+
+volumes:
+  mysql_dev_data:
+    driver: local
+
+networks:
+  blog-dev-network:
+    driver: bridge 
