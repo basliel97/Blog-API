@@ -32,7 +32,9 @@ import { HealthController } from './presentation/controllers/health.controller';
     database: config.get<string>('DB_DATABASE'),
     entities: [UserOrmEntity, PostOrmEntity, CommentOrmEntity],
     synchronize: true, // Usually false for prod; run migrations instead
-    ssl: true,
+    ssl:  {
+    rejectUnauthorized: false, // 🛠️ This fixes the "self-signed certificate" error
+  },
   }),
 }),
 
