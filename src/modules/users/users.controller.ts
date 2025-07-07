@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, BadRequestException } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateUserCommand } from '../../application/users/commands/create-user.command';
 import { UpdateUserCommand } from '../../application/users/commands/update-user.command';
@@ -33,14 +33,22 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.queryBus.execute(new GetUserByIdQuery(+id));
+    const userId = +id;
+    if (isNaN(userId) || userId <= 0) {
+      throw new BadRequestException('Invalid user ID');
+    }
+    return this.queryBus.execute(new GetUserByIdQuery(userId));
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() updateUserDto: any) {
+    const userId = +id;
+    if (isNaN(userId) || userId <= 0) {
+      throw new BadRequestException('Invalid user ID');
+    }
     return this.commandBus.execute(
       new UpdateUserCommand(
-        +id,
+        userId,
         updateUserDto.username,
         updateUserDto.email,
         updateUserDto.role,
@@ -50,6 +58,10 @@ export class UsersController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.commandBus.execute(new DeleteUserCommand(+id));
+    const userId = +id;
+    if (isNaN(userId) || userId <= 0) {
+      throw new BadRequestException('Invalid user ID');
+    }
+    return this.commandBus.execute(new DeleteUserCommand(userId));
   }
 }

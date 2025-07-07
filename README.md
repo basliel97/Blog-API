@@ -284,3 +284,107 @@ npm run build:webpack     # Build with webpack
 npm run lint              # Run ESLint
 npm run lint:fix          # Fix ESLint issues
 ```
+
+## Deployment
+
+### Vercel Deployment
+
+This project is configured for easy deployment on Vercel.
+
+#### Prerequisites
+
+1. A Vercel account
+2. A database (PostgreSQL recommended for Vercel)
+
+#### Database Setup
+
+For production, we recommend using Vercel Postgres or a managed database service:
+
+- **Vercel Postgres**: Built-in integration with Vercel
+- **PlanetScale**: MySQL-compatible serverless database
+- **Supabase**: PostgreSQL with additional features
+- **Railway**: Simple database hosting
+
+#### Environment Variables
+
+Set these environment variables in your Vercel project:
+
+```
+NODE_ENV=production
+DB_TYPE=postgres  # or mysql
+DB_HOST=your-database-host
+DB_PORT=5432  # or 3306 for MySQL
+DB_USERNAME=your-username
+DB_PASSWORD=your-password
+DB_DATABASE=your-database-name
+JWT_SECRET=your-jwt-secret
+JWT_EXPIRES_IN=24h
+FRONTEND_URL=https://your-frontend-domain.vercel.app
+```
+
+#### Deployment Steps
+
+1. **Connect your repository to Vercel**:
+   - Go to [vercel.com](https://vercel.com)
+   - Import your GitHub repository
+   - Vercel will auto-detect it as a Node.js project
+
+2. **Configure environment variables**:
+   - In your Vercel project settings, add all the environment variables listed above
+
+3. **Deploy**:
+   - Vercel will automatically deploy on every push to your main branch
+   - You can also trigger manual deployments
+
+4. **Update CORS**:
+   - Update the `FRONTEND_URL` in your environment variables
+   - Or modify the CORS origins in `src/main.ts`
+
+#### API Endpoints
+
+Once deployed, your API will be available at:
+- `https://your-project-name.vercel.app`
+
+Example endpoints:
+- Health check: `GET /health`
+- Users: `GET /users`
+- Posts: `GET /posts`
+- Auth: `POST /auth/login`
+
+### Other Deployment Options
+
+- **Railway**: Similar to Vercel, good for full-stack apps
+- **Render**: Good free tier, easy setup
+- **Heroku**: Mature platform with extensive add-ons
+- **Google Cloud Run**: Serverless containers
+- **AWS ECS**: Enterprise-grade container orchestration
+
+## API Documentation
+
+The API includes Swagger documentation. When running locally, visit:
+- `http://localhost:3000/api` (if Swagger is configured)
+
+## Testing
+
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Test coverage
+npm run test:cov
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
+
+## License
+
+This project is licensed under the MIT License.

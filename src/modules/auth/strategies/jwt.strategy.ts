@@ -19,9 +19,15 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any): Promise<User> {
     console.log('JWT Payload:', payload);
+    
+    // Validate that payload.sub exists and is a valid number
+    if (!payload.sub || isNaN(payload.sub) || payload.sub <= 0) {
+      throw new UnauthorizedException('Invalid user ID in token');
+    }
+    
     const user = await this.queryBus.execute(new GetUserByIdQuery(payload.sub));
     if (!user) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('User not found');
     }
     return user;  // attached to req.user
   }

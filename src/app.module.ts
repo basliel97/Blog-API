@@ -12,16 +12,27 @@ import { HealthController } from './presentation/controllers/health.controller';
 
 @Module({
   imports: [
-      ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: process.env.DB_TYPE === 'postgres' ? 'postgres' : 'mysql',
       host: process.env.DB_HOST || 'localhost',
       port: parseInt(process.env.DB_PORT || '3306'),
       username: process.env.DB_USERNAME || 'root',
       password: process.env.DB_PASSWORD || 'root',
       database: process.env.DB_DATABASE || 'blog_api',
-      entities: [UserOrmEntity, PostOrmEntity,CommentOrmEntity],
+      entities: [UserOrmEntity, PostOrmEntity, CommentOrmEntity],
       synchronize: process.env.NODE_ENV !== 'production',
+      ssl: process.env.DB_TYPE === 'postgres' ? { rejectUnauthorized: false } : false,
+      extra: process.env.DB_TYPE === 'postgres' ? {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+        max: 1,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 10000,
+      } : {},
+      logging: process.env.NODE_ENV === 'development',
+      cache: false,
     }),
     AuthModule,
     PostModule,
