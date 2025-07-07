@@ -1,3 +1,8 @@
+import * as crypto from 'crypto';
+
+if (!(global as any).crypto) {
+  (global as any).crypto = crypto;
+}
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
