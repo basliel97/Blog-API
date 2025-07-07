@@ -31,8 +31,8 @@ import { HealthController } from './presentation/controllers/health.controller';
     password: config.get<string>('DB_PASSWORD'),
     database: config.get<string>('DB_DATABASE'),
     entities: [UserOrmEntity, PostOrmEntity, CommentOrmEntity],
-    synchronize: false, // Usually false for prod; run migrations instead
-    ssl: { rejectUnauthorized: false },
+    synchronize: true, // Usually false for prod; run migrations instead
+    ssl: true,
   }),
 }),
 
